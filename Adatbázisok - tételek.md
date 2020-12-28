@@ -9,11 +9,12 @@
    1. [Heap szervezés](#Heap-szervezés)
    2. [Hash-állományok](#Hash-állományok)
    3. [Indexelt állományok](#Indexelt-állományok)
-   4. [Ritka indexek, B*-fák](#Ritka-indexek,-B*-fák)
-   5. [Sűrű indexek, előnyök és hátrányok](#Sűrű-indexek,-előnyök-és-hátrányok)
-   6. [Változó hosszúságú rekordok kezelése](#Változó-hosszúságú-rekordok-kezelése)
-   7. [Részleges információ alapján történő keresés](#Részleges-információ-alapján-történő-keresés)
-   8. [Több kulcs szerinti keresés támogatása](#Több-kulcs-szerinti-keresés-támogatása)
+   4. [Ritka indexek](#Ritka-indexek)
+   5. [B*-fák](#B*-fák)
+   6. [Sűrű indexek, előnyök és hátrányok](#Sűrű-indexek,-előnyök-és-hátrányok)
+   7. [Változó hosszúságú rekordok kezelése](#Változó-hosszúságú-rekordok-kezelése)
+   8. [Részleges információ alapján történő keresés](#Részleges-információ-alapján-történő-keresés)
+   9. [Több kulcs szerinti keresés támogatása](#Több-kulcs-szerinti-keresés-támogatása)
 3. [A logikai adatbázis](#A-logikai-adatbázis)
    1. [Adatmodellek, modellezés](#Adatmodellek,-modellezés)
    2. [Az E-R modell és elemei](#Az-E-R-modell-és-elemei)
@@ -166,11 +167,40 @@ Műveletek:
 
 ### Indexelt állományok
 
+Az alapötlet az, hogy a keresés kulcsát egy külön állományban tároljuk, ahonnan egy mutató a rekordot tartalmazó blokkra mutat. Az indexállományban a kulcsnak és a mutatónak fix mérete van, így az indexállomány `blocking_factor`a `f_i = floor(b / (k + p))` lesz, ahol `k` a kulcsmező mérete és `p` a mutató mérete.
 
+Az indexelt állomány rendezve van tárolva.
 
-### Ritka indexek, B*-fák
+Az indexállományoknak két gyakori típusa lehet:
+
+- sűrű index: az indexállományban minden indexelt rekordhoz tartozik egy bejegyzés
+- ritka index: csak az indexelt rekordok egy csoportjához rendel egy bejegyzést az indexállományban
+
+### Ritka indexek
+
+- Keresés: bináris kereséssel megkeressük a megfelelő bejegyzést az indexállományban, majd a mutatott blokkból kiolvassuk a keresett rekordot.
+- Beszúrás: frissíteni kell az indexállományt.
+- Törlés: frissíteni kell az indexállományt.
+- Módosítás: Ha kulcsot érint a módosítás, egy beszúrás + törlés kombóval kell frissíteni az indexállományt.
+
+### B*-fák
 
 ### Sűrű indexek, előnyök és hátrányok
+
+Előnyök:
+
+- nem kell rendezetten tartani az adatállományt
+- támogatja a több kulcs szerinti keresést
+- meggyorsíthatja a rekordelérést, mert a ritka index mérete jóval kisebb is lehet, mint sűrű index nélkül
+- az adatállomány rekordjai (csaknem) szabadokká tehetők, ha minden további rekordhivatkozás a sűrű indexen keresztül történik (egyetlen mutatót kell megváltoztatni
+
+Hátrányok:
+
+- Sok helyet foglal
+- +1 indirekció a rekord kiolvasásához
+- karbantartási overhead
+
+Műveletek: mintha egy hashtable-t használnánk
 
 ### Változó hosszúságú rekordok kezelése
 
@@ -190,7 +220,7 @@ Egy másik megoldás a partícionált hash függvények alkalmazása. Ennek alap
 
 ### Több kulcs szerinti keresés támogatása
 
-TODO
+Sűrű index használatával megvalósítható.
 
 ## A logikai adatbázis
 
