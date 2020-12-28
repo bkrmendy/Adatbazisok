@@ -66,7 +66,25 @@
 
 ### Adat, információ, tudás. Metaadatok. Strukturált, szemistrukturált és nem strukturált adatok.
 
+Adat, információ, tudás: 🧓🏼 G4jd0s stuff
+
+#### Metaadatok
+
+A tárolt adatok sémáját leíró adatok (pl egy embert a neve, életkora és magassága jellemzi, ahol a neve egy max 128 karakteres UTF8 string, az életkora egy 4 byte-os `int`, a magassága pedig egy `real` ).
+
+#### Adatok strukturáltsága
+
+Azt jelenti, hogy az adatbázisban tárolt adatok mennyire vann szétbontva, és az adatbázissal mennyire részletesen lehet lekérdezni/hozzáférni.
+
+Nem strukturált adatokra példa, ha az összes adatot szövegként egy hatalmas XML file-ban lenne tárolva, így viszont az adatbázis max. szöveg-manipulációs függvényekkel férhet hozzá.
+
+Szemi-strukturált adatokra példa, ha pl. egy blogon a posztok JSON-ban string-ként vannak tárolva, de a pl. publikálás dátuma, szerzője és a poszt címe már külön mező a posztokat tároló tábla sémájában. 
+
+Teljesen strukturált adatoknál minden "atomi" adat (tehát amik külön már nem lennének értelmesek, pl számok, stringek, dátumok, koordináták) külön mező.
+
 ### Adatbázis-kezelő fogalma, feladatai, felépítése, használói
+
+
 
 ## A fizikai adatbázis
 
