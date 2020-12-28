@@ -185,6 +185,12 @@ Az indexállományoknak két gyakori típusa lehet:
 
 ### B*-fák
 
+Alapötlet: az index is indexelve van: "Az i − 1. index egyidejűleg ritka indexe az i. indexnek és adatállománya az i − 2. indexnek".
+
+![Fa szervezésű indexelés](assets/b-star-tree.png)
+
+
+
 ### Sűrű indexek, előnyök és hátrányok
 
 Előnyök:
