@@ -2,11 +2,11 @@
 
 ## Tartalomjegyzék
 
-1. [Adatbázisok alapjai](#Adatbázisok alapjai)
+1. [Adatbázisok alapjai](#Adatbázisok-alapjai)
    1. [Adat, információ, tudás. Metaadatok. Strukturált, szemistrukturált és nem strukturált adatok.](#Adat, információ, tudás. Metaadatok. Strukturált, szemistrukturált és nem strukturált adatok.)
    2. [Adatbázis-kezelő fogalma, feladatai, felépítése, használói](#Adatbázis-kezelő fogalma, feladatai, felépítése, használói)
-2. [A fizikai adatbázis](#A fizikai adatbázis)
-   1. [Heap szervezés](#Heap szervezés)
+2. [A fizikai adatbázis](#A-fizikai-adatbázis)
+   1. [Heap szervezés](#Heap-szervezés)
    2. [Hash-állományok](#Hash-állományok)
    3. [Indexelt állományok](#Indexelt állományok)
    4. [Ritka indexek, B*-fák](#Ritka indexek, B*-fák)
