@@ -114,6 +114,17 @@ A rétegmodellben a rétegek lehetővé teszik, hogy a mindegyik réteg csak a s
 
 ## A fizikai adatbázis
 
+Egy adatbázis fizikai része lehet diszkrezidens vagy memóriarezidens. A fizikai szervezés implementálásában
+
+- keresés
+- beszúrás
+- törlés
+- módosítás
+
+műveletek hatékonysága az elsődleges szempont.
+
+
+
 ### Heap szervezés
 
 ### Hash-állományok
@@ -126,9 +137,23 @@ A rétegmodellben a rétegek lehetővé teszik, hogy a mindegyik réteg csak a s
 
 ### Változó hosszúságú rekordok kezelése
 
+(jegyzet: 3.4)
+
+Ez a szituáció akkor állhat elő, ha egy mező változó hosszúságú lehet (pl egy név stringben), vagy ismétlődő mezőcsoport van egy rekordban. Általában a fix hosszúságú mezők a rekord elején, a változó hosszúságúak pedig a végén találhatóak, így a rekord eleje garantáltan fix hosszúságú marad. A változó hosszúságú mezők beillesztésére két megközelítés létezik: a konkrét adat egy pointerrel van helyettesítve, ami egy másik állományba mutat (így ez a mező is fix hosszúságúvá tehető), vagy a maximális lehetséges mennyiségű hely le van fogalva előre, és abba íródik az adat. Ezen kívül ennek a két megközelítésnek a hibridjét is lehet alkalmazni.
+
 ### Részleges információ alapján történő keresés
 
+(jegyzet: 3.5)
+
+(Feltételezzük, hogy a mezők egyike sem kulcs.)
+
+Ebben az esetben az egyik megoldás, hogy több, vagy egyenesen minden mezőre építünk indexeket, és ez után sima indexelt keresésként kezeljük a problémát. Ez a megoldás elég költséges az indexek tárolása és karbantartása miatt.
+
+Egy másik megoldás a partícionált hash függvények alkalmazása. Ennek alapötlete az, hogy a hash a rekord mezőiből külön külön van kalkulálva, úgy, hogy az összefűzött értéke a vöröd sorszámát adja. Ha egyes rekordok nem ismertek, az azokhoz tartozó bitminta "tetszőleges" lesz, és minden vödröt végig kell nézni, ahol passzolnak a hash ismert részei.
+
 ### Több kulcs szerinti keresés támogatása
+
+TODO
 
 ## A logikai adatbázis
 
