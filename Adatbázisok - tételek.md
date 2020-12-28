@@ -155,7 +155,18 @@ Ebben az esetben ay adatok mindenféle segédstruktúra nélkül, "kupacban" van
 
 ### Hash-állományok
 
+Ebben a megközelítésben egy rekord kulcsmezőiből vödrös hasheléssel megkapjuk a rekordot tartalmazó blokk címét tartalmazó vödröt.
+
+Műveletek:
+
+- Keresés: A hash függvényel megkapjuk azokat a blokkokat, amik potenciálisan tartalmazhatják a rekordot. Ezeket a blokkokat lineárisan végigolvasva megkapjuk a keresett rekordot. Ekkor az elérés ideje `1/(2B)` lesz, ahol `B` a hash függvény által használt vödrök száma.
+- Beszúrás: az állomány beszúrása a keresésnek megfelelően történik (plusz egyediségi garanciák). Ha csak új blokkba lehet elhelyezni a beszúrt rekordot, akkor az új blokkot hozzá kell fűzni a megfelelő vödörben tárolt blokkokhoz.
+- Törlés: beszúrás, csak fordítva
+- Módosítás: ha nem érint kulcsmezőt, akkor semmi extra (mint a heap-ben). Ha viszont igen, akkor a vödör katalógust frissíteni kell, ami több műveletet is maga után vonhat (mivel lehet, hogy a rekordot csak új blokkba lehet beilleszteni).
+
 ### Indexelt állományok
+
+
 
 ### Ritka indexek, B*-fák
 
