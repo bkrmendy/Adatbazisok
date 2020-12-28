@@ -66,7 +66,51 @@
 
 ### Adat, információ, tudás. Metaadatok. Strukturált, szemistrukturált és nem strukturált adatok.
 
+Adat, információ, tudás: 🧓🏼 G4jd0s stuff
+
+#### Metaadatok
+
+A tárolt adatok sémáját leíró adatok (pl egy embert a neve, életkora és magassága jellemzi, ahol a neve egy max 128 karakteres UTF8 string, az életkora egy 4 byte-os `int`, a magassága pedig egy `real` ).
+
+#### Adatok strukturáltsága
+
+Azt jelenti, hogy az adatbázisban tárolt adatok mennyire vann szétbontva, és az adatbázissal mennyire részletesen lehet lekérdezni/hozzáférni.
+
+Nem strukturált adatokra példa, ha az összes adatot szövegként egy hatalmas XML file-ban lenne tárolva, így viszont az adatbázis max. szöveg-manipulációs függvényekkel férhet hozzá.
+
+Szemi-strukturált adatokra példa, ha pl. egy blogon a posztok JSON-ban string-ként vannak tárolva, de a pl. publikálás dátuma, szerzője és a poszt címe már külön mező a posztokat tároló tábla sémájában. 
+
+Teljesen strukturált adatoknál minden "atomi" adat (tehát amik külön már nem lennének értelmesek, pl számok, stringek, dátumok, koordináták) külön mező.
+
 ### Adatbázis-kezelő fogalma, feladatai, felépítése, használói
+
+#### Adatbázis-kezelő fogalma
+
+Az a "program" (és a hozzá tartozó infrastruktúra), ami a logikai adatbázist implementálja. Része a DDL és DML nyelvek implementációja, az adatbázis-menedzser, és az állománykezelő.
+
+#### Az adatbázis-kezelő feladatai
+
+- Az adatbázis-séma értelmezése és tárolása (DDL)
+- A felhasználói lekérdezések végrehajtása (DML)
+- A fizikai tárolás megvalósítása
+- Adatvédelem: a felhasználók privilégiumok szerinti elkülönítése
+- Adatbiztonság: az adatok extrém csapások után is maradjanak elérhetőek
+- Integritás: az adatbázisban tárolt adatok mindig legyenek "helyesek". A helyesség arra utal, hogy 1) egy adott mezőhöz tartozó kényszerek be legyenek tartva 2) referenciális integritás megmaradjon (pl idegen kulcsok esetén)
+- Szinkronitás: több felhasználós működés esetén ne legyen "áthallás" a felhasználók között
+
+#### Tipikus felhasználók
+
+Lásd jegyzet 1.3
+
+#### Az adatbázis-kezelő (logikai) felépítése
+
+![Az adatbázis-kezelő (logikai) felépítése](assets/dbms-structure.png)
+
+![Az adatbázis-kezelő rétegmodellje](assets/dbms-layers.png)
+
+(forrás: jegyzet)
+
+A rétegmodellben a rétegek lehetővé teszik, hogy a mindegyik réteg csak a saját szomszédainak interface-étől függjön, azaz pl a keresési implementációja akármilyen fizikai hardverrel együtt tud működni (pl in-memory vagy disk alapú).
 
 ## A fizikai adatbázis
 
