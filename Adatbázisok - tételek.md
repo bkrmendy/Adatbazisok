@@ -123,9 +123,35 @@ Egy adatbázis fizikai része lehet diszkrezidens vagy memóriarezidens. A fizik
 
 műveletek hatékonysága az elsődleges szempont.
 
+A fizikai tárolásban használt "elemek" hierarchiája valami ilyesmi:
 
+- a teljes adatbázis tárolására használt háttértár
+  - file-ok: az oprendszer kezeli őket
+    - blokkok
+      - rekordok
+
+A blokkok mérete kilobájtokban mérhető méretű, csak egy relatíve alacsony, fix mennyiségű tárolható egyszerre az operatív tárban (RAM-ban). A fenti 4 művelet hatékonyságát az határozza meg, hogy egy blokk tartalmát hányszor kell a háttértárból kiolvasni. A blokkok rendelkeznek egy fejléccel, ahol a tartalmazott rekordokra vonatkozó metaadatok tárolódnak (pl melyik rekord van törölve).
+
+A rekordok [header, record*] struktúrával rendelkeznek. Egy rekord szabad, ha az adatbázisban nincs rá mutató pointer (ellenkező esetben kötött). A rekordok tartalmazhatnak ismétlődő hosszúságú mezőket.
+
+Jelölések:
+
+```
+b: blokkméret (fejléc nélkül)
+s_r: az r állomány rekordmérete
+n_r: az r állomány rekordjainak száma
+f_r: az r állományban egy blokkban elhelyezkedő rekordok száma (blocking factor): floor(b / s_r)
+b_r: az r állomány által elfoglalt blokkok száma: ceil(n_r / f_r)
+```
 
 ### Heap szervezés
+
+Ebben az esetben ay adatok mindenféle segédstruktúra nélkül, "kupacban" vannak tárolva. A 4 művelet a következőképpen alakul:
+
+- Keresés: lineáris kereséssel minden blokkot végig kell nézni a keresett rekordokért. Mivel a legjobb esetben egyből meglesz a keresett rekord, legrosszabb esetben pedig az utolsóként sorra kerülő blokkban van, átlagosan `blokkok száma / 2` blokkművelet után lesz meg.
+- Törlés: a kereséshez hasonlóan.
+- Beszúrás: a rekordok egyediségét biztosító mezőknek valóban egyedinek kell maradniuk. A beszúrás elvégzésekor vagy egy törölt rekord helyére lehet beírni az újat, vagy az állomány végére kell beszúrni (esetleg új blokkba).
+- Módosítás: kb keresés + törlés + beszúrás jellemzőt hordozza. Minden esetben gondoskodni kell arról, hogy két megkülönböztethetetlen rekord ne kerüljön az adatbázisba.
 
 ### Hash-állományok
 
