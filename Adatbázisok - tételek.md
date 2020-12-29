@@ -287,11 +287,39 @@ Egyedhalmaz
 
 ### A relációs adatmodell: adatok strukturálása és műveletek
 
+#### Adatok strukturálása
+
+Reláció: Halmazok Descartes-szorzatának részhalmaza. A relációban lévő attribútumok száma a reláció *foka*, a relációban lévő sorok száma pedig a reláció *számossága*.
+
+Egy reláció nem tartalmazhat azonos sort, a sorok sorrendje nem számít, és az oszlopoknak egyértelmű nevük van.
+
+#### Műveletek
+
+- Únió: sorok értékei alapján
+- Különbség: sorok értékei alapján
+- Descartes-szorzat (Cartesian product) : Oszlopok nevei alapján
+- Projekció
+- Szelekció
+- Természetes illesztés: ahol az azonos nevű attribútumok értékei megegyeznek
+- Theta-illesztés: ugyanaz, mint a természetes illesztés, csak valamilyen feltételt lehet definiálni
+- Hányados: kb Descartes-szorzat indexe
+
 ### Relációalgebra
+
+Ugyanaz mint fent? 🤷‍♂️
 
 ### Sorkalkulus, oszlopkalkulus
 
+(jegyzet 5.2, 5.3)
+
 ### Biztonságosság
+
+Formula doménje: DOM(ψ) = { ψ-beli alaprelációk összes attribútumának értékei } U { ψ-ben előforduló konstansok }
+
+{ *t* | ψ(*t*) } biztonságos, ha
+
+- minden ψ(*t*)-t kielégítő *t* minden komponense DOM(ψ)-beli és
+- ψ-nek minden (∃*u*)⍵(*u*) alakú részformulájára teljesül, hogy ha *u* kielégíti ⍵-t az ⍵-beli szabad változók valamely értéke mellett, akkor *u* minden komponense DOM(⍵)-beli
 
 ## Lekérdezés-optimalizálás
 
