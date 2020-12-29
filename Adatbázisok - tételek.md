@@ -232,9 +232,58 @@ Sűrű index használatával megvalósítható.
 
 ### Adatmodellek, modellezés
 
+Adatmodell:
+
+- formalizált jelölésrendszer az adatok, adatkapcsolatok leírására
+- műveletek az adatokon
+
+Modellezés: a valóság leképzése valamilyen egyszerűsített formalizmusra
+
 ### Az E-R modell és elemei
 
-### Az E-R diagram, ISA kapcsolatok, gyenge egyedhalmazok
+Az ER modell nem teljes adatmodell, mivel az adatműveletek nincsek benne definiálva.
+
+Elemei:
+
+- Egyedtípusok
+- Attribútumtípusok
+- Kapcsolattípusok
+
+#### Entitások (4.2.1.1)
+
+> A valós világban létező, logikai vagy fizikai szempontból saját léttel rendelkező dolog, amelyről adatokat tárolunk.
+
+Tulajdonságok
+
+> Az entitásokat jellemzi, amelyen vagy amelyeken keresztül az entitások megkülönböztethetők.
+
+Egyedhalmaz
+
+> Az azonos attribútumtípusokkal jellem- zett egyedek összessége.
+
+#### Kapcsolatok
+
+> Entitások névvel ellátott viszonya.
+>
+> Kapcsolatok funcionalitása: pl. egy-egy, egy-több vagy több-több kapcsolat
+
+#### Kulcs
+
+> Az ER-modellezésnél az attribútumoknak azt a halma- zát, amely az entitás példányait egyértelműen azonosítja, kulcsnak nevezzük.
+
+#### Gyenge egyedhalmaz
+
+> ... a modellezés során egy entitáshalmaznak nem tudunk kulcsot meghatározni, hanem az egyedek azonosításához valamely kapcsolódó egyed(ek)re is szükség van. Ebben az esetben gyenge egyedhalmazról (weak entity set) beszélünk. A gyenge egyedhalmaz identitását egy (vagy ritkán több) ún. tulajdonos egyedhalmaz (owner entity set) biztosítja, amely a gyenge egyedhalmazzal több-egy kapcsolatban áll. A kapcsolat neve determináló kapcsolat (identifying relationship).
+
+#### Grafikus ábrázolás
+
+![Jelölések](assets/elements.png)
+
+![Kapcsolatok](assets/relationships.png)
+
+![Specializáció](assets/specialization.png)
+
+![Gyenge egyedhalmaz](assets/weak_entity_set.png)
 
 ### A relációs adatmodell: adatok strukturálása és műveletek
 
