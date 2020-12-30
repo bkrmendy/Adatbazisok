@@ -401,8 +401,7 @@ Legális ütemezés:
 
 > Legális az az ütemezés, amelyben
 > 	– a lockolt adategységeket fel is szabadítják (unlockkal), továbbá
-> 	– ha egy adategység már foglalt – mert egy másik tranzakció tart fenn zárat rajta (ami nem megosztható) –, akkor a tranzakció a zár felszabadulásáig
-> várakozik.
+> 	– ha egy adategység már foglalt (mert egy másik tranzakció tart fenn zárat rajta, ami nem megosztható), akkor a tranzakció a zár felszabadulásáig várakozik.
 
 #### Problémák:
 
@@ -427,9 +426,65 @@ Ha egy adott időpontban nincs patt, a várakozási gráfban nincs kör, mivel
 
 ### Tranzakció modellek
 
+Egyszerű modell:
+
+- csak egyfajta zár létezik
+- egy adatelemen egy időben egy zár lehet
+
+Sorosítási gráf az egyszerű modellben:
+
+> Olyan irányított gráf, amelynek a csomópontjai a tranzakciók, egy élt pedig akkor rajzolunk a Ti csomópontból a Tj csomópont felé, ha van olyan A adategység, amelyen egy adott S ütemezésben a Ti tranzakció zárat helyezett el, majd a zár felszabadítása után először a Tj tranzakció helyez el zárat A-n.
+
+RLOCK-WLOCK modell:
+
+- Két fajta zár létezik:
+  - RLOCK: Ha egy adott adategységen RLOCK van, más tranzakció olvashatja azt, de nem írhatja
+  - WLOCK: Ha egy adott adategységen WLOCK van, semelyik másik tranzakció nem olvashatja vagy írhajta
+- Az UNLOCK művelet mind a WLOCK-ot, mind a RLOCK-ot felszabadítja
+
+Sorosítási gráf a RLOCK-WLOCK modellben:
+
+A és B tranzakció között akkor kell élet rajzolni, ha
+
+- A WLOCK-ot tart fenn és B ugyanarra az adatra akar RLOCK-ot tenni
+- A akármilyen lockot tart fenn és B ugyanarra az adatra akar WLOCK-ot tenni
+
+Egy S ütemezés akkor és csak akkor sorosítható, ha a sorosítási gráf irányított, aciklikus gráf (DAG), mivel
+
+> Előre (indirekt): tegyük fel, hogy S sorosítható, de tartalmaz kört a sorosítási gráfja. Ekkor a kört alkotó tranzakciók közül egyik sem előzi meg a másikat, tehát egy soros ekvivalensben egyik sincs legelöl, azaz az ütemezés nem sorosítható, ellentmondásban a feltétellel.
+>
+> Visszafelé: ha a gráf DAG, akkor létezik topologikus rendezése. Belátjuk, hogy ebből a rendezésből legalább egy soros ekvivalens előállítható. Ugyanis a legelöl álló tranzakció (vagy tranzakciók) nem olvashat(nak) olyan adategységet, amin egy másik tranzakció korábban már zárat helyezett el, tehát először lefuthat(nak). Ha a gráfból eltávolítunk egy ilyen tulajdonságú tranzakciót (T_első) jelölő csomópontot, akkor a maradék gráf továbbra is DAG, tehát továbbra is létezik topologikus rendezése. A korábbi megfontolás továbbra is érvényes, így megadható(k) az(ok) a tranzakció(k), amelyek T_első után lefuthatnak, mert vagy egyáltalán nem olvas(nak) olyan adategységet, amin egy másik tranzakció korábban már zárat helyezett el, vagy csak T_első által már korábban lockolt adategységen helyeznek el zárat. Mindez addig folytatható, amíg a gráf minden csomópontját eltávolítottuk a gráfból: az eltávolítás sorrendje az előbbiek alapján az ütemezésnek egy soros ekvivalense lesz.
+
 ### Kétfázisú zárolás (2PL)
 
+Az első zárfelszabadítást megelőzi mindegyik zárkérés.
+
+Ha egy legális ütemezés a kétfázisú protokollt követi, az ütemezés sorosítható, mivel
+
+> a sorosíthatóságnak szükséges és elégséges feltétele, hogy a sorosítási gráfban ne legyen kör, elegendő ezt belátni. ...
+
+Zárpont: amikor egy kétfázisú protokollt követő tranzakció az utolsó zárját is megkapja.
+
+Az előző tétel bizonyítása zárpontok segítségével:
+
+> A tétel bizonyításához rendezzük a tranzakciókat a növekvő zárpontjuk szerinti sorrendbe. Beláthatjuk, hogy ez egy soros ekvivalens ütemezés lesz.
+> Tegyük fel, hogy az ütemezésben a Ti: LOCK A után következik a Tj: LOCK A művelet (azaz minden soros ekvivalensben Ti meg kell, hogy előzze Tj-t). Ehhez nyilván az kell, hogy Ti felszabadítsa a zárat A-n (Ti: UNLOCK A), mielőtt Tj: LOCK A következne. Viszont Ti is kétfázisú, így meg kell hogy kapja minden zárját Tj: LOCK A előtt. Emiatt Ti biztosan megelőzi Tj-t a zárpontok növekvő sor- rendjében, valamennyi soros ekvivalensnek megfelelően. Így a növekvő zárpontok szerinti sorrend nem mond ellent a soros ekvivalens(eke)t meghatározó feltételeknek, azaz egyike a lehetséges soros ekvivalenseknek, az ütemezés sorosítható.
+
+Az RLOCK-WLOCK modell kétfázisú, ha minden RLOCK és WLOCK megelőzi az első UNLOCK-ot.
+
 ### A fa protokoll
+
+Akkor van jelentősége, ha az adategységek valamilyen hierarchikus struktúrába vannak szervezve, pl B* fa vagy egymásba ágyazott adatelemek.
+
+A fa protokoll szabályai:
+
+- A tranzakció akárhova teheti az első lockot
+- további lockot csak arra az adatra lehet helyezni, aminek a szűlőjére ugyanaz a tranzakció már rakott zárat
+- egy tranzakció kétszer nem zárolhatja ugyanazt az adatot.
+
+Mivel az unlockra nincs előírás, a protokoll nem feltétlenül kétfázisú.
+
+A fa protokollnak eleget tevő legális ütemezések sorosíthatóak, mivel (jegyzet 10.6.1 bizonyítás).
 
 ### A figyelmeztető protokoll
 
