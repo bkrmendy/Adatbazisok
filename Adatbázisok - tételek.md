@@ -603,12 +603,16 @@ A helyreállítás lépései:
 
 ### Időbélyeges tranzakciókezelés R/W modellben
 
-Időbélyeg:
-
-> Olyan érték, amelyet minden tranzakcióhoz szigorú egyediséget biztosítva rendelünk hozzá, és amely arányos (legegyszerűbb esetben azonos) a tranzakció kezdőidejével. Jele: t(Tranzakció).
+(jegyzet 10.9)
 
 ### Az időbélyeges R/W modell és a 2PL összehasonlítása
 
+(jegyzet 10.9.1.1)
+
 ### Tranzakcióhibák és az időbélyegek
 
+(jegyzet, 10.9.3)
+
 ### Verziókezelés időbélyegek mellett (MVCC)
+
+(jegyzet, 10.9.4)
