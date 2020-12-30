@@ -488,6 +488,36 @@ A fa protokollnak eleget tevő legális ütemezések sorosíthatóak, mivel (jeg
 
 ### A figyelmeztető protokoll
 
+Az egyszerű tranzakciómodellt bővíti ki azzal, hogy egy csomópont zárolása a gyermekei zárolását is jelenti.
+
+A figyelmeztető protokoll zárműveletei:
+
+- LOCK A: zárolja A-t és az összes leszármazott csomópontot is. Két különbö- ző tranzakció nem tarthat fenn egyidejűleg zárat ugyanazon adategységen.
+- WARN A: A-ra figyelmeztetést (warning) rak. Ekkor A-t más tranzakció nem zárolhatja.
+- UNLOCK A: eltávolítja a zárat vagy az UNLOCK-ot kiadó tranzakció által elhelyezett figyelmeztetést A-ról.
+
+Szabályai:
+
+1. Egy tranzakció első művelete kötelezően LOCK gyökér vagy WARN gyökér,
+2. LOCK A vagy WARN A akkor helyezhető el, ha A szülőjén ugyanaz a
+  tranzakció már helyezett el WARN-t,
+3. UNLOCK A akkor lehetséges, ha A gyerekein már ugyanaz a tranzakció
+  nem tart fenn sem LOCK-ot, sem WARN-t,
+4. Kétfázisú: az első UNLOCK után nem következhet LOCK vagy WARN.
+
+A figyelmeztető protokollt követő legális ütemezések zárkonfliktus-mentesek és sorosíthatók, mivel
+
+> 1. A protokoll 1-3. szabályai biztosítják, hogy bármely T1 tranzakció csak akkor tehessen zárat egy adategységre, ha figyelmeztetés van annak minden ősén. Emiatt egyidejűleg más T2 tranzakció nem tehet zárat egy lockolt adategységnek egyetlen ősére sem. Ahhoz pedig, hogy egy leszármazott adategységre tehessen zárat T2 az kellene, hogy ettől az adategységtől a gyökérig T2 figyelmeztetéseket helyezzen el. Azonban a figyelmeztetés biztosan nem helyezhető el arra az adategységre, amelyiken már T1 helyezett el zárat, hiszen ezek a zárműveletek nem kompatibilisek. Tehát nem alakulhat ki zárkonfliktus.
+> 2. Megmutatjuk, hogy az adott R ütemezés átalakítható egy olyan ekvivalens S ütemezésbe, amely az egyszerű tranzakció modellnek felel meg, és minden adategységet explicit módon zárolunk.
+>
+> S-et tehát úgy állítjuk elő, hogy
+>
+> 1. eltávolítjuk az összes figyelmeztetést és UNLOCK párjait R-ből,
+> 2. LOCK X esetén explicit zárat helyezzünk X minden leszármazottjára is,
+> 3. UNLOCK X esetén eltávolítjuk a zárat X minden leszármazottjáról.
+>
+> Ezek után S legális, mert R is legális volt, és az átalakítással semmi olyat nem tettünk, ami miatt illegálissá válhatna, továbbá kétfázisú, mert R is kétfázisú volt és az átalakítás során a kétfázisú tulajdonság megmaradt. Ezek elégséges feltételek S sorosíthatóságához.
+
 ### Tranzakcióhibák kezelése, commit pont
 
 ### Szigorú kétfázisú protokoll (szigorú 2PL)
