@@ -500,9 +500,9 @@ Szabályai:
 
 1. Egy tranzakció első művelete kötelezően LOCK gyökér vagy WARN gyökér,
 2. LOCK A vagy WARN A akkor helyezhető el, ha A szülőjén ugyanaz a
-  tranzakció már helyezett el WARN-t,
+    tranzakció már helyezett el WARN-t,
 3. UNLOCK A akkor lehetséges, ha A gyerekein már ugyanaz a tranzakció
-  nem tart fenn sem LOCK-ot, sem WARN-t,
+    nem tart fenn sem LOCK-ot, sem WARN-t,
 4. Kétfázisú: az első UNLOCK után nem következhet LOCK vagy WARN.
 
 A figyelmeztető protokollt követő legális ütemezések zárkonfliktus-mentesek és sorosíthatók, mivel
@@ -520,19 +520,92 @@ A figyelmeztető protokollt követő legális ütemezések zárkonfliktus-mentes
 
 ### Tranzakcióhibák kezelése, commit pont
 
+Lehetséges okok, ami miatt félbeszakadhat egy tranzakció:
+
+- Nem fér hozzá egy adategységhez
+- Patt miatt kilövi az ütemező
+- A sorosíthatóság biztosítása miatt lövi ki az ütemező
+- Rendszerhiba lép fel
+- A háttértár tartalma sérül (médiahiba)
+
+Piszkos adat:
+
+> Olyan adat, amit az előtt írt valamely tranzakció az adatbázisba, mielőtt commitált volna (ld. még a 10.2. szakaszban a piszkos olvasás jelenségét).
+
 ### Szigorú kétfázisú protokoll (szigorú 2PL)
+
+Szabályai:
+
+- nem ír az adatbázisba, amíg a készpontot el nem érte
+- a zárait csak az adatbázisba írás után engedi el
+
+>  Azaz a COMMIT, adatbázisba írás, zárak elengedése pontosan ebben a sorrendben következik.
+
+A szigorú kétfázisú protokollt követő transzakciókból álló legális ütemezések
+
+- sorosíthatók, mert kétfázisúak
+- lavinamentesek, mivel nincs lehetőség piszkos adat olvasására
 
 ### Agresszív és konzervatív protokollok
 
+Tranzakciós teljesítményt befolyásoló tényezők:
+
+- Zártáblák, pattok kezelése
+- Abortált tranzakciók feleslegesen dolgoztak
+- Adatbázis hleyreállítása, lavinaeffektus felszámolása
+
+Megközelítések:
+
+- Aggresszív protokoll: olyan gyorsan fut le, ahogy csak tud, függetlenül az abort lehetőségétől
+- Konzervatív protokoll: kerüli az olyan tranzakciók futtatását, amik nem biztos, hogy eredményesek lesznek
+
 ### Védekezés rendszerhibák ellen
+
+Módszere: a tranzakciós naplózás.
+
+Általában az alábbi szerkezetű rekordokat tartalmazza:
+
+```
+(⟨tranzakció azonosító⟩, begin)
+(⟨tranzakció azonosító⟩, commit)
+(⟨tranzakció azonosító⟩, abort)
+(⟨tranzakció azonosító⟩, ⟨adategység⟩, ⟨új érték⟩, ⟨régi érték⟩) (ha nem kell undo, elég az új érték)
+```
 
 ### Hatékonysági kérdések
 
+(jegyzet 10.8.1)
+
 ### A redo protokoll: naplózás és helyreállítás
+
+Olyan tranzakciókezelést valósít meg, amely rendszerhiba (és tranzakcióhiba) után szükségtelenné teszi az undo műveletet, csak redo kell.
+
+A naplózás lépései:
+
+1. `(T, begin)` naplóba,
+2. `(T , A, ⟨A új értéke⟩)` naplóba, ha T megváltoztatja valamely A adategység értékét,
+3. `(T, commit)` naplóba, ha T elérte a commit pontját,
+4. a napló mindazon oldalainak stabil tárba írása, amikkel ez még nem történt meg,
+5. az A értékeknek a tényleges írása az adatbázisba (operatív tárba),
+6. a piszkos DB blokkok diszkre írása egyéb szempontok szerint,
+7. zárak elengedése.
+
+A helyreállítás lépései:
+
+1. az összes zár felszabadítása,
+2. napló vizsgálata visszafelé: feljegyezzük azon tranzakciókat, amelyekre találunk (T, commit) bejegyzést
+3. addig megyünk visszafelé a naplóban, ameddig nem találunk egy konzisztens állapotot (ld. később),
+4. a 2. pontnak megfelelő tranzakciókra vonatkozó bejegyzések segítségével az adatbázisban található értékeket felülírjuk az újakkal.
 
 ### Ellenőrzési pontok (checkpointing)
 
+(jegyzet 10.8.3)
+
 ### Időbélyeges tranzakciókezelés R/W modellben
+
+Időbélyeg:
+
+> Olyan érték, amelyet minden tranzakcióhoz szigorú egyediséget biztosítva rendelünk hozzá, és amely arányos (legegyszerűbb esetben azonos) a tranzakció kezdőidejével. Jele: t(Tranzakció).
 
 ### Az időbélyeges R/W modell és a 2PL összehasonlítása
 
