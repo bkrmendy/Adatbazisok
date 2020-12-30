@@ -43,9 +43,9 @@
    10. [A Boyce-Codd normálforma (BCNF)](#a-Boyce-Codd-normálforma-(BCNF))
 6. [Tranzakció-kezelés](#tranzakció-kezelés)
    1. [ACID tulajdonságok adatbázis-kezelő rendszerekben](#acid-tulajdonságok-adatbázis-kezelő-rendszerekben)
-   2. [Lost update, non-repetable read, phantom read, dirty data](#lost-update-non-repetable-read-phantom-read-dirty-data)
-   3. [Problémák a zárakkal: pattok és éhezés](#problémák-a-zárakkal-pattok-és-éhezés)
-   4. [Ütemezések fajtái](#ütemezések-fajtái)
+   2. [Ütemezések fajtái](#ütemezések-fajtái)
+   3. [Lost update, non-repetable read, phantom read, dirty data](#lost-update-non-repetable-read-phantom-read-dirty-data)
+   4. [Problémák a zárakkal: pattok és éhezés](#problémák-a-zárakkal-pattok-és-éhezés)
    5. [Tranzakció modellek](#tranzakció-modellek)
    6. [Kétfázisú zárolás (2PL)](#kétfázisú-zárolás-(2PL))
    7. [A fa protokoll](#a-fa-protokoll)
@@ -362,11 +362,68 @@ Formula doménje: DOM(ψ) = { ψ-beli alaprelációk összes attribútumának é
 
 ### ACID tulajdonságok adatbázis-kezelő rendszerekben
 
+- **A**tomicity: Egy tranzakció vagy sikerül, vagy nem
+- **C**onsistency: Egy művelet az adatbázist egy érvényes állapotból egy másik érvényes állapotba viszi át
+- **I**solation: A párhuzamos tranzakciók is úgy futnak le, mintha egy másik tranzakció se futna rajtuk kívül
+- **D**urability: Ha egy tranzakció sikeresen lefutott, annak hatása nem veszhet
+
+### Ütemezések fajtái
+
+- Soros ütemezés: a tranzakciók egyenként, egymás után futnak
+- Nem soros ütemezés: minden más. Lehet sorosítható vagy nem sorosítható.
+
+Sorosíthatóság:
+
+> Egy ütemezés pontosan akkor so- rosítható, ha létezik olyan soros ütemezés (ez lesz a soros ekvivalens ütemezés, serial equivalent schedule), amelynek minden hatása a módosított adatokra azo- nos az adott ütemezésével.
+
 ### Lost update, non-repetable read, phantom read, dirty data
+
+- Dirty read: Egy tranzakció olyan adatot olvas, amit egy másik tranzakció befejeződése előtt írt az adatbázisba
+- Lost update: két tranzakció egy időben ír egy helyre, és a két update közül az egyiket felülírja a másik
+- Non-repeatable read: ugyanarról a helyről két egymás utáni olvasás más eredményt ad, mert egy másik tranzakció a kettő között update-elte az adott adatot
+- Phantom read: egy tranzakció többször ugyanazt a lekérdezést hajtja végre és különböző eredményhalmazokat kap vissza, mert közben egy másik tranzakció olyan adatokat szúr be, amik beleesnek a lekérdezés feltételébe
+
+Izolációs elv:
+
+> Egy tranzakció elvárt eredménye az, amit akkor kapunk, ha a tranzakció futása közben más tranzakció nem fut.
+
+Korrekt ütemezés:
+
+> Egy ütemezés akkor korrekt, ha sorosítható.
 
 ### Problémák a zárakkal: pattok és éhezés
 
-### Ütemezések fajtái
+Zár:
+
+> Hozzáférési privilégium egy adategységen, amely adható és visszavonható.
+
+Legális ütemezés:
+
+> Legális az az ütemezés, amelyben
+> 	– a lockolt adategységeket fel is szabadítják (unlockkal), továbbá
+> 	– ha egy adategység már foglalt – mert egy másik tranzakció tart fenn zárat rajta (ami nem megosztható) –, akkor a tranzakció a zár felszabadulásáig
+> várakozik.
+
+#### Problémák:
+
+##### Deadlock
+
+Két tranzakció azért nem tud továbblépni, mert mindketten olyan zárat tartanak, ami a másiknak kell a továbblépéshez. Megoldási lehetőségek:
+
+- A tranzakciók minden zárat egyszerre lockoljanak le, ha akármelyiket nem sikerül, azonnal térjenek vissza (valamilyen hibajelzéssel lehetőleg)
+- Limitált ideig várakozzanak, és ha letelt a megadott várakozási idő anélkül, hogy megszerezték volna a szükséges zárat, azonnal térjenek vissza (valamilyen hibajelzéssel lehetőleg)
+- A zárakat csak valamilyen előre definiált sorrendben lehessen megszerezni
+- Egy "zármenedzser" folyamatosan figyelje a zárak elhelyezését, és ha ez a zármenedzser pattot érzékel, lője ki a pattot okozó tranzakciót
+
+Várakozási gráf:
+
+> Olyan irányított gráf, ahol a gráf csomópontjai a tranzakciók, egy élt pedig akkor rajzolunk az A csomópontból a B csomópont felé, ha az A tranzakció bármely okból várakoztatja a B tranzakciót úgy, hogy nem tud továbbmenni.
+
+Ha egy adott időpontban nincs patt, a várakozási gráfban nincs kör, mivel
+
+> Előre: (indirekt) tegyük fel, hogy van kör. Az élek rajzolásának szabálya miatt ez azt jelenti, hogy a körben résztvevő tranzakciók egymást várakoztatják, egyik sem tud továbblépni, ami éppen egy patthelyzetet jelent, ellentmondásban azzal, hogy nincs patt. Tehát ha nincs patt, akkor nem lehet kör a várakozási gráfban.
+>
+> Visszafelé: ha a gráf DAG, akkor létezik topologikus rendezése, ekkor pedig ez a tranzakcióknak egy olyan sorbarendezése, amelyben a tranzakciók sorban egymás után elindulhatnak anélkül, hogy várakoztatnák egymást. Tehát nincs patt.
 
 ### Tranzakció modellek
 
