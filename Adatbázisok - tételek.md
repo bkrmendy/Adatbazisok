@@ -413,20 +413,66 @@ Egy 1NF relációs séma 2NF alakú, ha benne minden másod- lagos attribu�
 
 ### A harmadik normálforma (3NF)
 
-Triviális függés: Ha az X,Y att- ribútumhalmazokra igaz, hogy Y ⊆ X, akkor az X → Y függőséget triviális függőségnek nevezzük, egyébként a függőség nemtriviális.
+Triviális függés: Ha az X,Y attribútumhalmazokra igaz, hogy Y ⊆ X, akkor az X → Y függőséget triviális függőségnek nevezzük, egyébként a függőség nemtriviális.
 
 Tranzitív függés: Adott egy R séma, a sémán értelmezett funkcionális függőségek F halmaza, X ⊆ R,A ∈ R. A tranzitívan függ X-től,ha ∃Y⊂R, hogy X→Y, Y ̸→X, Y →A és A∈/Y.
 
 (Armstrong axiómák)
 
-Egy 1NF R séma 3NF, ha egyetlen másodlagos attribútuma sem függ tranzitívan egyetlen kulcstól sem.
+Egy 1NF-ban lévő R séma 3NF, ha egyetlen másodlagos attribútuma sem függ tranzitívan egyetlen kulcstól sem.
 
 Alternatív megfogalmazásban: Egy 1NF R séma 3NF, ha ∀X → A, X ⊆ R, A ∈ R nemtriviális függőség esetén
 
 - X szuperkulcs vagy
 - A elsődleges attribútum.
 
+A két definíció ekvivalens, mert:
+
+> Előre: Def. 1. ⇒ Def. 2.
+>
+> Indirekt: Def. 1. feltételei mellett t. f. h. ∃Z → B nemtriviális függőség, ahol Z nem szuperkulcs, és B nem elsődleges attribútum.
+>
+> Viszont minden relációs sémának létezik kulcsa, legyen ez X. Igaz tehát, hogy X → Z,Z ̸→ X (különben Z szuperkulcs lenne), Z → B,B ∈/ Z (különben Z → B triviális függőség lenne). Ez pedig éppen egy másodlagos attribútum kulcstól való tranzitív függése, ellentmondásban Def. 1. feltételeivel.
+>
+> Tehát Def. 1. ⇒ Def. 2.
+>
+> Visszafelé: Def. 2. ⇒ Def. 1.
+>
+> Indirekt: Def. 2. feltételei mellett t. f. h. ∃Y ⊂ R,∃X kulcs és ∃A másodlagos attribútum,hogy X→Y, Y ̸→X, Y →A és A∈/Y. X→Y, mivel X kulcs, ezért nincs ellentmondásban Def. 2-vel, Y ̸→ X, tehát Y nem lehet szuperkulcs, Y → A és A ∈/ Y miatt tehát létezik egy nemtriviális függőség, melyben Y nem szuperkulcs, A nem elsődleges attribútum, ellentmondásban Def. 2. feltételeivel.
+>
+> Tehát Def. 2. ⇒ Def. 1.
+
 ### A Boyce-Codd normálforma (BCNF)
+
+Egy 1NF séma BCNF-ben van, ha egyáltalán nincs tranzitív függőség kulcstól.
+
+Alternatívan:
+
+> Egy 1NF R séma BCNF, ha ∀X → A,X ⊆
+>
+> R, A ∈ R nemtriviális függőség esetén X szuperkulcs.
+
+A két definíció ekvivalens, mert
+
+> Előre: Def. 1. ⇒ Def. 2.
+>
+> Indirekt: Def. 1. feltételei mellett t. f. h. ∃Z → B nemtriviális függőség, hogy Z nem szuperkulcs.
+>
+> Viszont minden relációs sémának létezik kulcsa, legyen X ezek közül egy. Igaz tehát, hogy X → Z, Z ̸→ X, Z → B, B ∈/ Z. Ez pedig éppen a B attribútum X kulcstól való tranzitív függése, ellentmondásban Def. 1. feltételeivel.
+>
+> Tehát Def. 1. ⇒ Def. 2.
+>
+> Visszafelé: Def. 2. ⇒ Def. 1.
+>
+> Indirekt: Def. 2. feltételei mellett t. f. h. ∃Y ⊂ R, ∃X kulcs és ∃A attribútum, hogy X→Y, Y ̸→X, Y →A és A∈/Y.
+>
+> X → Y : mivel X kulcs, ezért nincs ellentmondásban Def. 2-vel, Y ̸→ X, tehát Y nem lehet szuperkulcs,
+>
+> Y → A és A ∈/ Y miatt tehát létezik egy nemtriviális függőség, melyben Y nem szuperkulcs, ellentmondásban Def. 2. feltételeivel.
+>
+> Tehát Def. 2. ⇒ Def. 1.
+
+Egy adatbázis BCNF (3NF, 2NF, 1NF) alakú, ha a benne található összes relációs séma rendre legalább BCNF (3NF, 2NF, 1NF).
 
 ## Tranzakció-kezelés
 
