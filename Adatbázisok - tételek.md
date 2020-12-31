@@ -340,21 +340,91 @@ Formula doménje: DOM(ψ) = { ψ-beli alaprelációk összes attribútumának é
 
 ### Relációs adatbázis sémák tervezése E-R diagramból
 
+(jegyzet 9.1 jól leírja)
+
 ### Anomáliák (módosítási,  törlési, beszúrási)
+
+- módosítási anomália
+- beszúrási anomália
+- törlési anomália
 
 ### Adatbázis kényszerek, redundancia
 
+> Adatbázis kényszerek alatt azokat a szabályokat értik, amelyek segítségével az adatbázisunk tartalmát olyan módon lehet jellemezni/korlátozni, hogy az vala- mely tervezésnek, ill. elképzelt/elvárt feltételeknek megfeleljen.
+
+- értékfüggő kényszerek (pl. 0 < TESTMAGASSÁG < 300)
+- értékfüggetlen kényszerek
+  - Tartalmazási függőség (pl. az idegen kulcsok értékeinek halmaza részhalmaza a neki megfeleltethető kulcsértékek halmazának)
+  - Funkcionális függőség
+  - Többértékű függőség
+
+Redundanciák pl:
+
+1. A szállító nevét több sorban is fel kell használnunk az általa szállított különböző tételek azonosításához.
+2. Ha feltételezzük, hogy a valóság úgy „működik”, hogy nincs két azonos nevű, különböző lakhelyű szállító, akkor minden olyan sorban, ahol megjelent egy szállító neve, törvényszerűen megjelent ugyanaz a lakcím is, ami nyilván felesleges ahhoz, hogy tudjuk, hol lakik a szállító.
+
 ### Funkcionális függőségek
+
+Intuitívan: A reláció valamelyik attribútumának értéke (vagy több attribútuma együtt) meghatározza egy másik attribútum értékét. Formálisan: (jegyzet 9.2.3)
 
 ### Relációs sémák kulcsai
 
+Kulcs definíciója a funkcionális függőségek fényében: Egy X attribútum (vagy attribútum-halmaz) akkor kulcs egy R relációban, ha R teljesen függ X-től (és nincs másik olyan X', amitől teljesen függ R)
+
+Variációk (itt X egy attribútumhalmaz egy relációban):
+
+- X szuperkulcs, ha tartalmaz kulcsot
+- X egyszerű kulcs, ha csak egy attribútumból áll (egyébként összetett kulcs)
+
+Minden relációs sémának van kulcsa, mivel
+
+> Válasszuk ugyanis az attribútumok teljes halmazát. Ez a kulcsok- ra vonatkozó első feltételnek eleget tesz, hiszen nincs olyan attribútum, amit ne vettünk volna figyelembe. Tehát meghatározza a relációs séma minden attribú- tumának értékét. Ha a második feltétel is teljesül, akkor kulcs, ha pedig nem, akkor szuperkulcs, tehát tartalmaz kulcsot. (jegyzet 9.2.3.2.1)
+
+Elsődleges kulcs: ha több kulcsa is van egy relációnak, akkor az egyiket elsődleges kulcsnak választjuk, a többit pedig kulcsjelöltnek
+
+Idegen kulcs:
+
+> Más szavakkal: egy sémában lehetnek olyan attribútumok, amelyek egy másik sémá- ra illeszkedő relációban a sorokat egyértelműen azonosítják, tehát ott kulcsok. Ezeket idegen kulcsoknak nevezzük.
+
 ### Armstrong axiómái a funkcionális függőségekről
+
+Adottak az R sémán az X, Y, Z attribútumhalmazok.
+
+1. Ha X ⊆ Y , akkor Y→X (reflexivitás vagy triviális függőség).
+2. Ha X→Y és Y→Z, akkor X→Z (tranzitivitás).
+3. Ha X→Y , akkor XZ→YZ (bővíthetőség).
+
+Soundness theorem: az Armstrong axiómákkal csak igaz függőségek állíthatóak elő egy adott függéshalmazból.
+
+Teljességi tétel: Az Armstrong axiómák teljesek, azaz belőlük minden igaz függőség levezethető.
 
 ### Az első normálforma (1NF)
 
+Egy relációs séma 1NF alakú (vagy más szóval normalizált, normalized), ha csak atomi attribútum-értékek szerepelnek benne (pl nincs benne olyan `string` mező, ahol pl vesszővel elválasztott elemek vannak és az elemekkel külön-külön akarnánk foglalkozni).
+
 ### A második normálforma (2NF)
 
+Egy R relációs sémában A ∈ R attribútuma
+
+- elsődleges attribútum (primary attribute), ha A eleme a séma vala- mely K kulcsának
+- egyébként másodlagos attribútum
+
+Egy 1NF relációs séma 2NF alakú, ha benne minden másod- lagos attribútum a séma bármely kulcsától teljesen függ.
+
 ### A harmadik normálforma (3NF)
+
+Triviális függés: Ha az X,Y att- ribútumhalmazokra igaz, hogy Y ⊆ X, akkor az X → Y függőséget triviális függőségnek nevezzük, egyébként a függőség nemtriviális.
+
+Tranzitív függés: Adott egy R séma, a sémán értelmezett funkcionális függőségek F halmaza, X ⊆ R,A ∈ R. A tranzitívan függ X-től,ha ∃Y⊂R, hogy X→Y, Y ̸→X, Y →A és A∈/Y.
+
+(Armstrong axiómák)
+
+Egy 1NF R séma 3NF, ha egyetlen másodlagos attribútuma sem függ tranzitívan egyetlen kulcstól sem.
+
+Alternatív megfogalmazásban: Egy 1NF R séma 3NF, ha ∀X → A, X ⊆ R, A ∈ R nemtriviális függőség esetén
+
+- X szuperkulcs vagy
+- A elsődleges attribútum.
 
 ### A Boyce-Codd normálforma (BCNF)
 
