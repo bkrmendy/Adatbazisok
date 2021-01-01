@@ -258,7 +258,7 @@ Tulajdonságok
 
 Egyedhalmaz
 
-> Az azonos attribútumtípusokkal jellem- zett egyedek összessége.
+> Az azonos attribútumtípusokkal jellemzett egyedek összessége.
 
 #### Kapcsolatok
 
@@ -268,7 +268,7 @@ Egyedhalmaz
 
 #### Kulcs
 
-> Az ER-modellezésnél az attribútumoknak azt a halma- zát, amely az entitás példányait egyértelműen azonosítja, kulcsnak nevezzük.
+> Az ER-modellezésnél az attribútumoknak azt a halmazát, amely az entitás példányait egyértelműen azonosítja, kulcsnak nevezzük.
 
 #### Gyenge egyedhalmaz
 
@@ -334,7 +334,7 @@ f_r:				mennyi rekord fér r reláció egy blokkjába
 V(A, r):		r relációban egy adott A attribútumnak hány különböző értéke fordul elő
 
 SC(A, r)
-Azon rekordok várható száma, amelyek kielégítenek egy egyenlőségi fel- tételt az A attribútumra (Selection Cardinality), feltéve, hogy legalább egy
+Azon rekordok várható száma, amelyek kielégítenek egy egyenlőségi feltételt az A attribútumra (Selection Cardinality), feltéve, hogy legalább egy
 rekord kielégíti ezt az egyenlőségi feltételt.
 Ha A egyediséget biztosít, akkor SC(A,r) = 1.
 Ha A nem biztosít egyediséget és eloszlása nem ismert, akkor a becsléshez feltesszük,
@@ -352,13 +352,11 @@ LB_i: az i index legalsó szintű blokkjainak a száma, azaz a levélszintű ind
 száma (Lowest level index Block).
 ```
 
-
-
 ### A lekérdezés költsége: szelekció, indexelt szelekció, join műveletek és algoritmusok, egyéb műveletek
 
-> ...a költség becslésére alapesetben a háttértár blokkmű- veletek számát használják, mivel ez lényegében független a rendszer terhelésétől és mert ennek időigénye nagyságrenddel nagyobb, mint a processzor- és memóriamű- veletek időigénye. A használható költségmérték megalkotásához azonban szüksé- ges a probléma megfelelő szintű egyszerűsítése. Nem szabad különbséget tennünk az egyes blokkok elérési ideje között, azaz alapfeltételezés, hogy a diszken elhe- lyezkedő minden blokkhoz azonos idő alatt férünk hozzá. Nem vesszük figyelembe a lemez forgási irányát, a fej mozgását sem. Nem tudunk különbséget tenni to- vábbá az egyes írások és olvasások között sem. Ez alapján legyen a költség a diszk blokkok olvasásának és írásának a száma azzal a további megszorítással, hogy az írásba csak a köztes blokkírások számát számítjuk bele, hiszen a végeredmény kiírása mindenképpen szükséges.
+> ...a költség becslésére alapesetben a háttértár blokkműveletek számát használják, mivel ez lényegében független a rendszer terhelésétől és mert ennek időigénye nagyságrenddel nagyobb, mint a processzor és memóriaműveletek időigénye. A használható költségmérték megalkotásához azonban szükséges a probléma megfelelő szintű egyszerűsítése. Nem szabad különbséget tennünk az egyes blokkok elérési ideje között, azaz alapfeltételezés, hogy a diszken elhelyezkedő minden blokkhoz azonos idő alatt férünk hozzá. Nem vesszük figyelembe a lemez forgási irányát, a fej mozgását sem. Nem tudunk különbséget tenni továbbá az egyes írások és olvasások között sem. Ez alapján legyen a költség a diszk blokkok olvasásának és írásának a száma azzal a további megszorítással, hogy az írásba csak a köztes blokkírások számát számítjuk bele, hiszen a végeredmény kiírása mindenképpen szükséges.
 
-E_alg = az algoritmus becsült költsége
+`E_alg = az <alg> algoritmus becsült költsége`
 
 #### Műveletek költsége
 
@@ -372,7 +370,7 @@ E_alg = az algoritmus becsült költsége
 
 Csak akkor tudjuk végrehajtani, ha
 
--  a blokkok folyamatosan helyezkednek el a diszken
+- a blokkok folyamatosan (egymás után) helyezkednek el a diszken
 - a fájl az A attribútum szerint rendezett
 - a szelekció feltétele az egyenlőség az A attribútumon
 
@@ -380,8 +378,8 @@ Csak akkor tudjuk végrehajtani, ha
 E = ⌈log_2(br)⌉ + ⌈SC(A, r) / f_r⌉ - 1
 		a)^^^^^^^^^   b)^^^^^^^^^^^^^^   c)
 a) a relációban lévő rekordokat tartalmazó blokkok logaritmusával arányos (bináris 		keresés miatt)
-b) a szelek- ció feltételét kielégítő összes rekord tárolásához szükséges blokkok átlagos száma
-c) szükséges, mert az összeg előbbi két tagja egyaránt tar- talmazza az első blokk olvasásának költségét.
+b) a szelekció feltételét kielégítő összes rekord tárolásához szükséges blokkok átlagos száma
+c) szükséges, mert az összeg előbbi két tagja egyaránt tartalmazza az első blokk olvasásának költségét.
 ```
 
 Ha az A attribútum egyediséget biztosít, akkor
@@ -405,13 +403,11 @@ Alapfeltételezések: egy adott feltétel alapján keresünk, amit átlagosan `n
 E = HT_i + LB_i / 2 + n_r / 2
 		a)^^   b)^^^^^^   c)^^^^^
 a): Height of Tree
-b): a levélszintű indexblokkok átlagosan felét kell bejárni, hogy el- érjük a feltételt kielégítő rekordokra mutató index-bejegyzéseket.
+b): a levélszintű indexblokkok átlagosan felét kell bejárni, hogy elérjük a feltételt kielégítő rekordokra mutató index-bejegyzéseket.
 c): ha a rekordok átlagosan fele elégíti ki a feltételt, akkor ezeket a másodlagos index jellegéből következően csak egyesével, azaz egy-egy további blokkművelettel tudjuk elérni.
 ```
 
 #### Join
-
-Join alatt a theta-joint értjük (természetes illesztés + feltétel).
 
 Típusai:
 
@@ -434,7 +430,7 @@ for minden tr ∈ r rekordra do
 end
 ```
 
-Ha a két reláció befér a memóriába, akkor br + bs blokkműveletre van szükség a beolvasáshoz. Ha a rendelkezésre álló memória csupán az egyik reláció tárolását teszi lehetővé, akkor is br + bs lesz a költség. Legyen ugyanis az algoritmus szerinti s reláció az, amely elfér a memóriában. Olvassuk be s-et (bs költség), így minden r- beli rekordhoz az összehasonlítást gyorsan, azaz költség nélkül megtehetjük, ehhez járul még az r-beli rekordok br beolvasási költsége.
+Ha a két reláció befér a memóriába, akkor br + bs blokkműveletre van szükség a beolvasáshoz. Ha a rendelkezésre álló memória csupán az egyik reláció tárolását teszi lehetővé, akkor is br + bs lesz a költség. Legyen ugyanis az algoritmus szerinti s reláció az, amely elfér a memóriában. Olvassuk be s-et (bs költség), így minden r-beli rekordhoz az összehasonlítást gyorsan, azaz költség nélkül megtehetjük, ehhez járul még az r-beli rekordok br beolvasási költsége.
 
 #### Block nested loop join
 
@@ -456,14 +452,14 @@ Worst case: ` br + br * bs`, kedvező esetben (az előző algoritmushoz hasonló
 
 #### Indexed nested loop join
 
-Az indexelt egymásba ágyazott ciklikus illesztés algoritmus kihasználja, hogy az egyik relációhoz van indexünk. Ha az első esetben bemutatott algoritmus belső ciklusába az indexelt relációt tesszük, akkor nem szükséges minden egyes s-beli rekordot végigvizsgálnunk, hogy megfelel-e a feltételnek, hiszen a keresés index alapján kisebb költséggel is elvégezhető. Az eljárás költsége br + nr · c, ahol c a szelekció költsége s-en, amely nyilván a konkrét indexstruktúra és indexelt szelek- ciós algoritmus függvénye.
+Az indexelt egymásba ágyazott ciklikus illesztés algoritmus kihasználja, hogy az egyik relációhoz van indexünk. Ha az első esetben bemutatott algoritmus belső ciklusába az indexelt relációt tesszük, akkor nem szükséges minden egyes s-beli rekordot végigvizsgálnunk, hogy megfelel-e a feltételnek, hiszen a keresés index alapján kisebb költséggel is elvégezhető. Az eljárás költsége br + nr · c, ahol c a szelekció költsége s-en, amely nyilván a konkrét indexstruktúra és indexelt szelekciós algoritmus függvénye.
 
 #### Merge join
 
 Az illesztés úgy is elvégezhető, ha
 
 1. Mindkét relációt először rendezzük az illesztési feltételnek megfelelő attribútum szerint
-2. Ezután már elég csak (szinkron- ban) végigolvasni mindkét relációt, hiszen az illeszkedő elemek a rendezés következtében egymás után kerültek.
+2. Ezután már elég csak (szinkronban) végigolvasni mindkét relációt, hiszen az illeszkedő elemek a rendezés következtében egymás után kerültek.
 
 `E = br + bs + (a rendezések költsége)`
 
@@ -473,7 +469,7 @@ Az egyik relációt hash-táblán keresztül érjük el, miközben a ma�
 
 #### Egyéb műveletek
 
--  Ismétlődés kiszűrése: (Ha ugyanabból a rekordból több példány van, akkor csak egy maradjon.) Először rendezést hajtunk végre. Az azonos rekordok közvetlenül egymás után fognak megjelenni, ekkor már könnyen törölhetők. Költség: a rendezés költsége.
+-  Ismétlődés kiszűrése (ha ugyanabból a rekordból több példány van, akkor csak egy maradjon): Először rendezést hajtunk végre. Az azonos rekordok közvetlenül egymás után fognak megjelenni, ekkor már könnyen törölhetők. Költség: a rendezés költsége.
 - Vetítés: Minden rekordra végrehajtjuk, aztán kiküszöböljük a másodpéldányokat a fenti módszerrel. Ha a rekordok eleve rendezettek, akkor a költség br, általános esetben br + a rendezés költsége.
 - Egyesítés: Először mindkét relációt rendezzük, majd összefésülésnél kiszűrjük a duplikációkat.
 - Metszetképzés: Mindkét relációt rendezzük, az összefésülésnél csak a közös rekordokat vesszük figyelembe.
@@ -518,7 +514,7 @@ Ekvivalencia-szabályok: (jegyzet 6.5.2)
 
 ### Adatbázis kényszerek, redundancia
 
-> Adatbázis kényszerek alatt azokat a szabályokat értik, amelyek segítségével az adatbázisunk tartalmát olyan módon lehet jellemezni/korlátozni, hogy az vala- mely tervezésnek, ill. elképzelt/elvárt feltételeknek megfeleljen.
+> Adatbázis kényszerek alatt azokat a szabályokat értik, amelyek segítségével az adatbázisunk tartalmát olyan módon lehet jellemezni/korlátozni, hogy az valamely tervezésnek, ill. elképzelt/elvárt feltételeknek megfeleljen.
 
 - értékfüggő kényszerek (pl. 0 < TESTMAGASSÁG < 300)
 - értékfüggetlen kényszerek
@@ -546,13 +542,13 @@ Variációk (itt X egy attribútumhalmaz egy relációban):
 
 Minden relációs sémának van kulcsa, mivel
 
-> Válasszuk ugyanis az attribútumok teljes halmazát. Ez a kulcsok- ra vonatkozó első feltételnek eleget tesz, hiszen nincs olyan attribútum, amit ne vettünk volna figyelembe. Tehát meghatározza a relációs séma minden attribú- tumának értékét. Ha a második feltétel is teljesül, akkor kulcs, ha pedig nem, akkor szuperkulcs, tehát tartalmaz kulcsot. (jegyzet 9.2.3.2.1)
+> Válasszuk ugyanis az attribútumok teljes halmazát. Ez a kulcsokra vonatkozó első feltételnek eleget tesz, hiszen nincs olyan attribútum, amit ne vettünk volna figyelembe. Tehát meghatározza a relációs séma minden attribútumának értékét. Ha a második feltétel is teljesül, akkor kulcs, ha pedig nem, akkor szuperkulcs, tehát tartalmaz kulcsot. (jegyzet 9.2.3.2.1)
 
 Elsődleges kulcs: ha több kulcsa is van egy relációnak, akkor az egyiket elsődleges kulcsnak választjuk, a többit pedig kulcsjelöltnek
 
 Idegen kulcs:
 
-> Más szavakkal: egy sémában lehetnek olyan attribútumok, amelyek egy másik sémá- ra illeszkedő relációban a sorokat egyértelműen azonosítják, tehát ott kulcsok. Ezeket idegen kulcsoknak nevezzük.
+> Más szavakkal: egy sémában lehetnek olyan attribútumok, amelyek egy másik sémára illeszkedő relációban a sorokat egyértelműen azonosítják, tehát ott kulcsok. Ezeket idegen kulcsoknak nevezzük.
 
 ### Armstrong axiómái a funkcionális függőségekről
 
@@ -574,10 +570,10 @@ Egy relációs séma 1NF alakú (vagy más szóval normalizált, normaliz
 
 Egy R relációs sémában A ∈ R attribútuma
 
-- elsődleges attribútum (primary attribute), ha A eleme a séma vala- mely K kulcsának
+- elsődleges attribútum (primary attribute), ha A eleme a séma valamely K kulcsának
 - egyébként másodlagos attribútum
 
-Egy 1NF relációs séma 2NF alakú, ha benne minden másod- lagos attribútum a séma bármely kulcsától teljesen függ.
+Egy 1NF relációs séma 2NF alakú, ha benne minden másodlagos attribútum a séma bármely kulcsától teljesen függ.
 
 ### A harmadik normálforma (3NF)
 
@@ -658,7 +654,7 @@ Egy adatbázis BCNF (3NF, 2NF, 1NF) alakú, ha a benne található összes 
 
 Sorosíthatóság:
 
-> Egy ütemezés pontosan akkor so- rosítható, ha létezik olyan soros ütemezés (ez lesz a soros ekvivalens ütemezés, serial equivalent schedule), amelynek minden hatása a módosított adatokra azo- nos az adott ütemezésével.
+> Egy ütemezés pontosan akkor sorosítható, ha létezik olyan soros ütemezés (ez lesz a soros ekvivalens ütemezés, serial equivalent schedule), amelynek minden hatása a módosított adatokra azonos az adott ütemezésével.
 
 ### Lost update, non-repetable read, phantom read, dirty data
 
@@ -752,7 +748,7 @@ Zárpont: amikor egy kétfázisú protokollt követő tranzakció az utolsó zá
 Az előző tétel bizonyítása zárpontok segítségével:
 
 > A tétel bizonyításához rendezzük a tranzakciókat a növekvő zárpontjuk szerinti sorrendbe. Beláthatjuk, hogy ez egy soros ekvivalens ütemezés lesz.
-> Tegyük fel, hogy az ütemezésben a Ti: LOCK A után következik a Tj: LOCK A művelet (azaz minden soros ekvivalensben Ti meg kell, hogy előzze Tj-t). Ehhez nyilván az kell, hogy Ti felszabadítsa a zárat A-n (Ti: UNLOCK A), mielőtt Tj: LOCK A következne. Viszont Ti is kétfázisú, így meg kell hogy kapja minden zárját Tj: LOCK A előtt. Emiatt Ti biztosan megelőzi Tj-t a zárpontok növekvő sor- rendjében, valamennyi soros ekvivalensnek megfelelően. Így a növekvő zárpontok szerinti sorrend nem mond ellent a soros ekvivalens(eke)t meghatározó feltételeknek, azaz egyike a lehetséges soros ekvivalenseknek, az ütemezés sorosítható.
+> Tegyük fel, hogy az ütemezésben a Ti: LOCK A után következik a Tj: LOCK A művelet (azaz minden soros ekvivalensben Ti meg kell, hogy előzze Tj-t). Ehhez nyilván az kell, hogy Ti felszabadítsa a zárat A-n (Ti: UNLOCK A), mielőtt Tj: LOCK A következne. Viszont Ti is kétfázisú, így meg kell hogy kapja minden zárját Tj: LOCK A előtt. Emiatt Ti biztosan megelőzi Tj-t a zárpontok növekvő sorrendjében, valamennyi soros ekvivalensnek megfelelően. Így a növekvő zárpontok szerinti sorrend nem mond ellent a soros ekvivalens(eke)t meghatározó feltételeknek, azaz egyike a lehetséges soros ekvivalenseknek, az ütemezés sorosítható.
 
 Az RLOCK-WLOCK modell kétfázisú, ha minden RLOCK és WLOCK megelőzi az első UNLOCK-ot.
 
@@ -776,7 +772,7 @@ Az egyszerű tranzakciómodellt bővíti ki azzal, hogy egy csomópont zárolás
 
 A figyelmeztető protokoll zárműveletei:
 
-- LOCK A: zárolja A-t és az összes leszármazott csomópontot is. Két különbö- ző tranzakció nem tarthat fenn egyidejűleg zárat ugyanazon adategységen.
+- LOCK A: zárolja A-t és az összes leszármazott csomópontot is. Két különböző tranzakció nem tarthat fenn egyidejűleg zárat ugyanazon adategységen.
 - WARN A: A-ra figyelmeztetést (warning) rak. Ekkor A-t más tranzakció nem zárolhatja.
 - UNLOCK A: eltávolítja a zárat vagy az UNLOCK-ot kiadó tranzakció által elhelyezett figyelmeztetést A-ról.
 
