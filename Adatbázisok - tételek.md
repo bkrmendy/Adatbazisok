@@ -23,12 +23,12 @@
    6. [Sorkalkulus, oszlopkalkulus](#sorkalkulus-oszlopkalkulus)
    7. [Biztonságosság](#biztonságosság)
 4. [Lekérdezés-optimalizálás](#lekérdezés-optimalizálás)
-   1. [Relációs lekérdezések heurisztikus optimalizálása](#relációs-lekérdezések-heurisztikus-optimalizálása)
-   2. [Relációalgebrai kifejezések transzformációi, ekvivalens kifejezések](#relációalgebrai-kifejezések-transzformációi,-ekvivalens-kifejezések)
-   3. [Relációs lekérdezések költségbecslés alapú optimalizálása](#relációs-lekérdezések-költségbecslés-alapú-optimalizálása)
-   4. [Katalógusban tárolt információk](#katalógusban-tárolt-információk)
-   5. [A lekérdezés költsége: szelekció, indexelt szelekció, join műveletek és algoritmusok, egyéb műveletek](#a-lekérdezés-költsége-szelekció-indexelt-szelekció-join-műveletek-és-algoritmusok-egyéb-műveletek)
-   6. [Materializáció és pipelining](#materializáció-és-pipelining)
+   1. [Katalógusban tárolt információk](#katalógusban-tárolt-információk)
+   2. [A lekérdezés költsége: szelekció, indexelt szelekció, join műveletek és algoritmusok, egyéb műveletek](#a-lekérdezés-költsége-szelekció-indexelt-szelekció-join-műveletek-és-algoritmusok-egyéb-műveletek)
+   3. [Materializáció és pipelining](#materializáció-és-pipelining)
+   4. [Relációalgebrai kifejezések transzformációi, ekvivalens kifejezések](#relációalgebrai-kifejezések-transzformációi,-ekvivalens-kifejezések)
+   5. [Relációs lekérdezések heurisztikus optimalizálása](#relációs-lekérdezések-heurisztikus-optimalizálása)
+   6. [Relációs lekérdezések költségbecslés alapú optimalizálása](#relációs-lekérdezések-költségbecslés-alapú-optimalizálása)
    7. [A kiértékelési terv kiválasztása](#a-kiértékelési-terv-kiválasztása)
 5. [Adatbázisok logikai tervezése](#adatbázisok-logikai-tervezése)
    1. [Relációs adatbázis sémák tervezése E-R diagramból](#relációs-adatbázis-sémák-tervezése-e-r-diagramból)
@@ -322,17 +322,170 @@ Formula doménje: DOM(ψ) = { ψ-beli alaprelációk összes attribútumának é
 
 ## Lekérdezés-optimalizálás
 
-### Relációs lekérdezések heurisztikus optimalizálása
-
-### Relációalgebraikifejezések transzformációi, ekvivalens kifejezések
-
-### Relációs lekérdezések költségbecslés alapú optimalizálása
-
 ### Katalógusban tárolt információk
+
+Rekordokról általában a következő információk vannak tárolva:
+
+```
+n_r:				az r relációban lévő rekordok száma
+b_r:				az r reláció rekordjait tartalmazó blokkok száma
+s_r:				az r reláció egy rekordjának mérete bájtban
+f_r:				mennyi rekord fér r reláció egy blokkjába
+V(A, r):		r relációban egy adott A attribútumnak hány különböző értéke fordul elő
+
+SC(A, r)
+Azon rekordok várható száma, amelyek kielégítenek egy egyenlőségi fel- tételt az A attribútumra (Selection Cardinality), feltéve, hogy legalább egy
+rekord kielégíti ezt az egyenlőségi feltételt.
+Ha A egyediséget biztosít, akkor SC(A,r) = 1.
+Ha A nem biztosít egyediséget és eloszlása nem ismert, akkor a becsléshez feltesszük,
+hogy a V(A,r) különböző érték egyenletesen oszlik el a rekordok között. Ekkor SC(A, r) = n_r / V(A, r)
+```
+
+Indexekről:
+
+```
+f_i: az átlagos pointer-szám a fa struktúrájú indexek csomópontjaiban, mint pl. a B* fáknál, azaz a csomópontokból induló ágak átlagos száma.
+
+HT_i: Az index szintjeinek száma. Az r relációt tartalmazó heap-szervezésű állományra épített B* fa esetén ⌈HT_i = log_fi(br)⌉ , ill. hash-állománynál HT_i = 1.
+
+LB_i: az i index legalsó szintű blokkjainak a száma, azaz a levélszintű indexblokkok
+száma (Lowest level index Block).
+```
+
+
 
 ### A lekérdezés költsége: szelekció, indexelt szelekció, join műveletek és algoritmusok, egyéb műveletek
 
+> ...a költség becslésére alapesetben a háttértár blokkmű- veletek számát használják, mivel ez lényegében független a rendszer terhelésétől és mert ennek időigénye nagyságrenddel nagyobb, mint a processzor- és memóriamű- veletek időigénye. A használható költségmérték megalkotásához azonban szüksé- ges a probléma megfelelő szintű egyszerűsítése. Nem szabad különbséget tennünk az egyes blokkok elérési ideje között, azaz alapfeltételezés, hogy a diszken elhe- lyezkedő minden blokkhoz azonos idő alatt férünk hozzá. Nem vesszük figyelembe a lemez forgási irányát, a fej mozgását sem. Nem tudunk különbséget tenni to- vábbá az egyes írások és olvasások között sem. Ez alapján legyen a költség a diszk blokkok olvasásának és írásának a száma azzal a további megszorítással, hogy az írásba csak a köztes blokkírások számát számítjuk bele, hiszen a végeredmény kiírása mindenképpen szükséges.
+
+E_alg = az algoritmus becsült költsége
+
+#### Műveletek költsége
+
+##### Szelekció
+
+###### Lineáris keresés:
+
+`E = b_r`
+
+###### Bináris keresés:
+
+Csak akkor tudjuk végrehajtani, ha
+
+-  a blokkok folyamatosan helyezkednek el a diszken
+- a fájl az A attribútum szerint rendezett
+- a szelekció feltétele az egyenlőség az A attribútumon
+
+```
+E = ⌈log_2(br)⌉ + ⌈SC(A, r) / f_r⌉ - 1
+		a)^^^^^^^^^   b)^^^^^^^^^^^^^^   c)
+a) a relációban lévő rekordokat tartalmazó blokkok logaritmusával arányos (bináris 		keresés miatt)
+b) a szelek- ció feltételét kielégítő összes rekord tárolásához szükséges blokkok átlagos száma
+c) szükséges, mert az összeg előbbi két tagja egyaránt tar- talmazza az első blokk olvasásának költségét.
+```
+
+Ha az A attribútum egyediséget biztosít, akkor
+
+`E = ⌈log_2(br)⌉`
+
+##### Indexelt szelekció
+
+- Elsődleges index használatával, egyenlőségi feltételt a kulcson vizsgálunk: `E = HT_i + 1` (index szintek plusz az adatblokk)
+- Elsődleges index használatával egyenlőségi feltétel nem a kulcson: `E = HT_i + ⌈SC(A, r) / f_r⌉`
+- Másodlagos index használatával, egyenlőségi feltétel alapján: `E = HTi + SC(A, r)`. Ha A egyediséget biztosít, akkor `E = HT_i + 1`
+
+##### Összehasonlítás alapú szelekció
+
+Alapfeltételezések: egy adott feltétel alapján keresünk, amit átlagosan `n_r / 2` rekord elégít ki.
+
+- Elsődleges index használatával: `HT_i + b_r / 2`
+- Másodlagos index:
+
+```
+E = HT_i + LB_i / 2 + n_r / 2
+		a)^^   b)^^^^^^   c)^^^^^
+a): Height of Tree
+b): a levélszintű indexblokkok átlagosan felét kell bejárni, hogy el- érjük a feltételt kielégítő rekordokra mutató index-bejegyzéseket.
+c): ha a rekordok átlagosan fele elégíti ki a feltételt, akkor ezeket a másodlagos index jellegéből következően csak egyesével, azaz egy-egy további blokkművelettel tudjuk elérni.
+```
+
+#### Join
+
+Join alatt a theta-joint értjük (természetes illesztés + feltétel).
+
+Típusai:
+
+- Natural join (lásd fent)
+- Theta join (lásd fent)
+- Outer join: A természetes illesztés veszélye, hogy általában a kapcsolt táblák nem minden sora szerepel az eredménytáblában. A külső illesztés garantálja az összekapcsolt két tábla egyikénél vagy mindkettőnél az összes rekord megőrzését. Egy elterjedt implementáció jelölési konvenciója (+) alapján megkülönböztetjük:
+  - Bal oldali külső illesztés: `t1 ∗ (+)t2`. Azt jelenti, hogy az eredménytáblában t1 azon sorai is szerepelnek, amelyek t2 egyetlen sorával sem párosíthatók. Ezen sorokban a t2-beli attribútumok értéke NULL.
+  - Jobb oldali külső illesztés: `t1(+) ∗ t2`. Hasonlóan a t2 táblára.
+  - Teljes külső illesztés: `t1(+) ∗ (+)t2`. Itt mindkét tábla nem párosított rekordjai megőrződnek.
+
+##### Nested loop join
+
+```
+for minden tr ∈ r rekordra do
+	for minden ts ∈ s rekordra do
+		if a (tr,ts) pár kielégíti az illesztés θ feltételét then
+			a tr ∗ ts rekordot az eredményhez adjuk
+		end
+  end
+end
+```
+
+Ha a két reláció befér a memóriába, akkor br + bs blokkműveletre van szükség a beolvasáshoz. Ha a rendelkezésre álló memória csupán az egyik reláció tárolását teszi lehetővé, akkor is br + bs lesz a költség. Legyen ugyanis az algoritmus szerinti s reláció az, amely elfér a memóriában. Olvassuk be s-et (bs költség), így minden r- beli rekordhoz az összehasonlítást gyorsan, azaz költség nélkül megtehetjük, ehhez járul még az r-beli rekordok br beolvasási költsége.
+
+#### Block nested loop join
+
+```
+for minden br ∈ r blokkra do
+	for minden bs ∈ s blokkra do
+		for minden tr ∈ br rekordra do
+			for minden ts ∈ bs rekordra do
+				if a (tr,ts) pár kielégíti az illesztés θ feltételét then
+					a tr ∗ ts rekordot az eredményhez adjuk
+				end
+			end
+		end
+	end
+end
+```
+
+Worst case: ` br + br * bs`, kedvező esetben (az előző algoritmushoz hasonlóan) `br + bs`.
+
+#### Indexed nested loop join
+
+Az indexelt egymásba ágyazott ciklikus illesztés algoritmus kihasználja, hogy az egyik relációhoz van indexünk. Ha az első esetben bemutatott algoritmus belső ciklusába az indexelt relációt tesszük, akkor nem szükséges minden egyes s-beli rekordot végigvizsgálnunk, hogy megfelel-e a feltételnek, hiszen a keresés index alapján kisebb költséggel is elvégezhető. Az eljárás költsége br + nr · c, ahol c a szelekció költsége s-en, amely nyilván a konkrét indexstruktúra és indexelt szelek- ciós algoritmus függvénye.
+
+#### Merge join
+
+Az illesztés úgy is elvégezhető, ha
+
+1. Mindkét relációt először rendezzük az illesztési feltételnek megfelelő attribútum szerint
+2. Ezután már elég csak (szinkron- ban) végigolvasni mindkét relációt, hiszen az illeszkedő elemek a rendezés következtében egymás után kerültek.
+
+`E = br + bs + (a rendezések költsége)`
+
+#### Hash join
+
+Az egyik relációt hash-táblán keresztül érjük el, miközben a másik, „külső” reláció egy adott rekordjához illeszkedő rekordokat keressük. Ebben az esetben a join algoritmus belső ciklusát a hash-állomány segítségével történő keresés váltja fel.
+
+#### Egyéb műveletek
+
+-  Ismétlődés kiszűrése: (Ha ugyanabból a rekordból több példány van, akkor csak egy maradjon.) Először rendezést hajtunk végre. Az azonos rekordok közvetlenül egymás után fognak megjelenni, ekkor már könnyen törölhetők. Költség: a rendezés költsége.
+- Vetítés: Minden rekordra végrehajtjuk, aztán kiküszöböljük a másodpéldányokat a fenti módszerrel. Ha a rekordok eleve rendezettek, akkor a költség br, általános esetben br + a rendezés költsége.
+- Egyesítés: Először mindkét relációt rendezzük, majd összefésülésnél kiszűrjük a duplikációkat.
+- Metszetképzés: Mindkét relációt rendezzük, az összefésülésnél csak a közös rekordokat vesszük figyelembe.
+- Különbségképzés: Mindkét relációt rendezzük, összefésülésnél csak azok a rekordok maradnak, amelyek csak az első relációban szerepelnek.
+
 ### Materializáció és pipelining
+
+### Relációalgebraikifejezések transzformációi, ekvivalens kifejezések
+
+### Relációs lekérdezések heurisztikus optimalizálása
+
+### Relációs lekérdezések költségbecslés alapú optimalizálása
 
 ### A kiértékelési terv kiválasztása
 
