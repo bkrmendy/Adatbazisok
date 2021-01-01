@@ -27,9 +27,9 @@
    2. [A lekérdezés költsége: szelekció, indexelt szelekció, join műveletek és algoritmusok, egyéb műveletek](#a-lekérdezés-költsége-szelekció-indexelt-szelekció-join-műveletek-és-algoritmusok-egyéb-műveletek)
    3. [Materializáció és pipelining](#materializáció-és-pipelining)
    4. [Relációalgebrai kifejezések transzformációi, ekvivalens kifejezések](#relációalgebrai-kifejezések-transzformációi,-ekvivalens-kifejezések)
-   5. [Relációs lekérdezések heurisztikus optimalizálása](#relációs-lekérdezések-heurisztikus-optimalizálása)
+   5. [A kiértékelési terv kiválasztása](#a-kiértékelési-terv-kiválasztása)
    6. [Relációs lekérdezések költségbecslés alapú optimalizálása](#relációs-lekérdezések-költségbecslés-alapú-optimalizálása)
-   7. [A kiértékelési terv kiválasztása](#a-kiértékelési-terv-kiválasztása)
+   7. [Relációs lekérdezések heurisztikus optimalizálása](#relációs-lekérdezések-heurisztikus-optimalizálása)
 5. [Adatbázisok logikai tervezése](#adatbázisok-logikai-tervezése)
    1. [Relációs adatbázis sémák tervezése E-R diagramból](#relációs-adatbázis-sémák-tervezése-e-r-diagramból)
    2. [Anomáliák (módosítási, törlési, beszúrási)](#anomáliák-(módosítási-törlési-beszúrási))
@@ -481,13 +481,28 @@ Az egyik relációt hash-táblán keresztül érjük el, miközben a ma�
 
 ### Materializáció és pipelining
 
+Materializáció: egy művelet kiszámítja a teljes relációt, és valami átmeneti helyre eltárolja. A következő művelet ezekkel az átmeneti adatokkal dolgozik tovább (és maga is átmeneti adatot produkál).
+
+Pipelining: egy művelet kiszámít valami minimális számú elemet, és ezeket azonnal tovább is adja a következő műveletnek, és így kisebb átmeneti tárkapacitásra van szükség. Ezeknek a műveleteknek a sorozata egy "csővezetéket" alkot. Két fajtája van:
+
+- Igényirányított: a rendszer rekordokat kér a csővezetéktől
+- Termelőirányított: A csővezetékben lévő műveletek folyamatosan "gyártják" az új eredményeket, és továbbküldik őket a következő fázisnak.
+
 ### Relációalgebraikifejezések transzformációi, ekvivalens kifejezések
 
-### Relációs lekérdezések heurisztikus optimalizálása
+Olyan kifejezések, amik ugyanazt az eredményt adják, de valamelyik gyorsabban fut.
+
+Ekvivalencia-szabályok: (jegyzet 6.5.2)
+
+### A kiértékelési terv kiválasztása
 
 ### Relációs lekérdezések költségbecslés alapú optimalizálása
 
-### A kiértékelési terv kiválasztása
+(jegyzet 6.6.1)
+
+### Relációs lekérdezések heurisztikus optimalizálása
+
+(jegyzet 6.6.2)
 
 ## Adatbázisok logikai tervezése
 
