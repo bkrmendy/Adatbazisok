@@ -54,3 +54,8 @@
   <summary>Napló</summary>
   A napló a mi értelmezésünk szerint az adat- bázison végrehajtott változások története.</details>
 
+<details>
+  <summary>Időbélyeg</summary>
+  Olyan érték, amelyet minden tranzakcióhoz szigorú egyediséget biztosítva rendelünk hozzá, és amely arányos (legegyszerűbb esetben azonos) a tranzakció kezdőidejével. Jele: t(Tranzakció).
+</details>
+
