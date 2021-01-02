@@ -1,19 +1,10 @@
 # Fogalmak
 
+## Tranzakció-kezelés
+
 <details>
  <summary>Tranzakció/Atomi művelet</summary>
   Egy program egyszeri futása, amelynek vagy minden művelete hatásos, vagy egyik se.</details>
-
-<details>
-  <summary>ACID</summary>
-  - atomicitás (atomicity): ld. fentebb.
-
-	- konzisztencia (consistency): csak sikeresen (teljes egészében) lefutott tranzakcióknak van hatása az adatbázis tartalmára, ekkor a tranzakciók az adatbázist egyik konzisztens állapotból egy másikba viszik át. 
-	  
-	- izoláció (isolation), másnéven elszigetelés: minden tranzakció úgy fut le (egy konkurens környezetben is), mintha közben más tranzakció nem futna.
-
-  - tartósság (durability): ha egy tranzakció már sikeresen lefutott, akkor annak hatása nem veszhet el.
-</details>
 
 <details>
   <summary>Ütemezés</summary>
@@ -38,4 +29,28 @@
   <summary>Sorosítási gráf, precedenciagráf</summary>
   Olyan irányított gráf, amelynek a csomópontjai a tranzakciók, egy élt pedig akkor rajzolunk a Ti csomópontból a Tj csomópont felé, ha van olyan A adategység, amelyen egy adott S ütemezésben a Ti tranzakció zárat helyezett el, majd a zár felszabadítása után először a Tj tranzakció helyez el zárat A-n.
 </details>
+
+<details>
+  <summary>Zárpont</summary>
+  Az az időpont, amikor egy kétfá- zisú protokoll szerinti tranzakció az utolsó zárját is megkapja.
+</details>
+
+<details>
+  <summary>Konzisztens állapot</summary>
+  Az adatbázisnak olyan állapota, amely csak teljesen lefutott tranzakciók hatását tükrözi (ld. ACID tulajdonságok)
+</details>
+
+<details>
+  <summary>Commit pont</summary>
+  Az az időpillanat, amikor egy tranzakció futása során már minden befejeződött, ami a tranzakció 1-3. okok miatti abortját eredményezheti.
+</details>
+
+<details>
+  <summary>Dirty data</summary>
+  Olyan adat, amit az előtt írt valamely tranzakció az adatbázisba, mielőtt commitált volna.
+</details>
+
+<details>
+  <summary>Napló</summary>
+  A napló a mi értelmezésünk szerint az adat- bázison végrehajtott változások története.</details>
 
