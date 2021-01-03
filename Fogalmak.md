@@ -1,5 +1,24 @@
 # Fogalmak
 
+## Adatbázisok logikai tervezése
+
+<details>
+  <summary>Redundáns reláció</summary>
+  Ha egy relációban valamely attribútum értékét a relációban található más attribútum(ok) értékéből ki tudjuk következtetni valamely ismert következtetési szabály segítségével, akkor a relációt redundánsnak nevezzük.
+</details>
+
+<details>
+  <summary>Teljes függés</summary>
+  Ha X, Y ⊆ R és X → Y , de ∄X′ ⊂ X, hogy X′ → Y, akkor azt mondjuk, hogy Y teljesen függ (funkcionálisan) X-től.
+</details>
+
+<details>
+  <summary>Igaz funkcionális függés</summary>
+Egy adott R sémán az attribútumain értelmezett FR függéshalmaz mellett egy X → Y függőség pontosan akkor igaz, ha minden olyan r(R) reláción fennáll, amelyeken FR összes függősége is fennáll.
+</details>
+
+
+
 ## Tranzakció-kezelés
 
 <details>
