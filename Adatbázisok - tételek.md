@@ -514,7 +514,9 @@ Ekvivalencia-szabályok: (jegyzet 6.5.2)
 
 ### Adatbázis kényszerek, redundancia
 
-> Adatbázis kényszerek alatt azokat a szabályokat értik, amelyek segítségével az adatbázisunk tartalmát olyan módon lehet jellemezni/korlátozni, hogy az valamely tervezésnek, ill. elképzelt/elvárt feltételeknek megfeleljen.
+Adatbázis kényszerek
+
+> alatt azokat a szabályokat értik, amelyek segítségével az adatbázisunk tartalmát olyan módon lehet jellemezni/korlátozni, hogy az valamely tervezésnek, ill. elképzelt/elvárt feltételeknek megfeleljen.
 
 - értékfüggő kényszerek (pl. 0 < TESTMAGASSÁG < 300)
 - értékfüggetlen kényszerek
@@ -539,6 +541,11 @@ Variációk (itt X egy attribútumhalmaz egy relációban):
 
 - X szuperkulcs, ha tartalmaz kulcsot
 - X egyszerű kulcs, ha csak egy attribútumból áll (egyébként összetett kulcs)
+
+Egy kulcs
+
+1. a relációnak egy és csakis egy elemét („sorát”) határozza meg,
+2. attribútumai nem lehetnek NULL-értékűek (azaz értékük meghatározatlan).
 
 Minden relációs sémának van kulcsa, mivel
 
