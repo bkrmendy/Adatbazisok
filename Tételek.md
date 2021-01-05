@@ -9,7 +9,13 @@
 ## Adatbázisok logikai tervezése
 
 - Minden relációs sémának van kulcsa.
-- 
+- igazság tétel (soundness theorem). Az Armstrong axiómák igazak (helyesek), alkalmazásukkal csak igaz függőségek állíthatók elő adott függéshalmazból.
+-  teljesség tétel (completeness theorem). Az Armstrong axiómák teljesek, azaz belőlük minden igaz függőség levezethető.
+- A 3NF két definíciója ekvivalens.
+- Ha egy séma 3NF alakú, akkor 2NF is egyben.
+- A BCNF két definíciója ekvivalens.
+- Ha egy séma BCNF alakú, akkor 3NF is.
+- A BCNF sémákra illeszkedő relációk nem tartalmaznak redundanciát (legalábbis funkcionális függőségek következtében).
 
 ## Tranzakciókezelés
 
