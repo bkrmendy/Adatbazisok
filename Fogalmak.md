@@ -19,8 +19,6 @@ Ha a modellezés során egy entitáshalmaznak nem tudunk kulcsot meghatározni, 
 DOM(Ψ) ≡ {Ψ-beli alaprelációk összes attribútumának értékei} ∪ {Ψ-ben előforduló konstansok}
 </details>
 
-
-
 ## Adatbázisok logikai tervezése
 
 <details>
@@ -51,8 +49,12 @@ Egy adott R sémán az attribútumain értelmezett FR függéshalmaz mellett egy
 
 <details>
   <summary>Izolációs elv</summary>
-  Feltételezzük, hogy egy tranzakció elvárt, korrekt eredménye az, amit akkor kapunk, ha a tranzakció futása közben más tranzakció nem fut.
+  Feltételezzük, hogy egy tranzakció elvárt, korrekt eredménye az, amit akkor kapunk, ha a tranzakció futása közben más tranzakció nem fut
 </details>
+
+<details>
+  <summary>Starvartion</summary>
+Ha egy tranzakció egy adategység lockolására vár, de közben más tranzakciók mindig lockolják előtte a kérdéses adategységet, akkor éhezésről (starving, livelock) beszélünk.</details>
 
 <details>
   <summary>Várakozási gráf</summary>
@@ -66,6 +68,11 @@ Egy adott R sémán az attribútumain értelmezett FR függéshalmaz mellett egy
 <details>
   <summary>Sorosítási gráf, precedenciagráf</summary>
   Olyan irányított gráf, amelynek a csomópontjai a tranzakciók, egy élt pedig akkor rajzolunk a Ti csomópontból a Tj csomópont felé, ha van olyan A adategység, amelyen egy adott S ütemezésben a Ti tranzakció zárat helyezett el, majd a zár felszabadítása után először a Tj tranzakció helyez el zárat A-n.
+</details>
+
+<details>
+  <summary>Lavina</summary>
+Egy másik tranzakció olvassa a piszkos adatot, és az a tranzakció már sikeres. Ennek ellenére, eredménye nem tekinthető helyesnek, így az adatbázisból ez is eltávolítandó. A jelenség iteráltan is előfordulhat, ekkor a jelenség neve lavina.
 </details>
 
 <details>
