@@ -545,7 +545,7 @@ Variációk (itt X egy attribútumhalmaz egy relációban):
 Egy kulcs
 
 1. a relációnak egy és csakis egy elemét („sorát”) határozza meg,
-2. attribútumai nem lehetnek NULL-értékűek (azaz értékük meghatározatlan).
+2. attribútumai nem lehetnek NULL-értékűek (azaz értékük meghatározatlan).
 
 Minden relációs sémának van kulcsa, mivel
 

@@ -1,5 +1,26 @@
 # Fogalmak
 
+## Fizikai adatbázis
+
+<details>
+  <summary>Invertált állomány</summary>
+Azt az indexállományt, amely nem kulcsmezőre tartalmaz indexeket, invertált állománynak nevezzük.
+</details>
+
+## Logikai adatbázis
+
+<details>
+  <summary>Gyenge egyedhalmaz</summary>
+Ha a modellezés során egy entitáshalmaznak nem tudunk kulcsot meghatározni, hanem az egyedek azonosításához valamely kapcsolódó egyed(ek)re is szükség van.
+</details>
+
+<details>
+  <summary>Formula doménje</summary>
+DOM(Ψ) ≡ {Ψ-beli alaprelációk összes attribútumának értékei} ∪ {Ψ-ben előforduló konstansok}
+</details>
+
+
+
 ## Adatbázisok logikai tervezése
 
 <details>
@@ -16,8 +37,6 @@
   <summary>Igaz funkcionális függés</summary>
 Egy adott R sémán az attribútumain értelmezett FR függéshalmaz mellett egy X → Y függőség pontosan akkor igaz, ha minden olyan r(R) reláción fennáll, amelyeken FR összes függősége is fennáll.
 </details>
-
-
 
 ## Tranzakció-kezelés
 
@@ -51,7 +70,12 @@ Egy adott R sémán az attribútumain értelmezett FR függéshalmaz mellett egy
 
 <details>
   <summary>Zárpont</summary>
-  Az az időpont, amikor egy kétfá- zisú protokoll szerinti tranzakció az utolsó zárját is megkapja.
+  Az az időpont, amikor egy kétfázisú protokoll szerinti tranzakció az utolsó zárját is megkapja.
+</details>
+
+<details>
+  <summary>Zárkonfliktus</summary>
+Amikor két tranzakció egyidejűleg tart fent zárat ugyanazon az adategységen.
 </details>
 
 <details>
